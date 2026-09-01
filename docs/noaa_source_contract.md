@@ -75,3 +75,43 @@ Initial metadata requirements:
 - TMIN continues through at least 2021
 
 Actual observation completeness will be evaluated separately.
+
+## Completeness Requirements
+
+A station qualifies for the canonical ClimatePulse analytical
+dataset when it satisfies all of the following:
+
+### Overall completeness
+
+- Baseline paired-day completeness >= 80%
+- Recent paired-day completeness >= 80%
+
+### Seasonal completeness
+
+For every calendar month:
+
+- Baseline paired-day completeness >= 70%
+- Recent paired-day completeness >= 70%
+
+A usable paired day requires both a valid TMAX and valid TMIN
+observation.
+
+Observations carrying a NOAA quality flag are excluded before
+completeness is calculated.
+
+## Geographic Coverage Limitation
+
+ClimatePulse targets EU-27 member states as its geographic universe.
+
+However, inclusion in the analytical dataset depends on NOAA
+GHCN-Daily station availability and the ClimatePulse completeness
+requirements.
+
+Countries without qualifying stations are not represented in
+country-level or EU-level analytical results.
+
+Therefore ClimatePulse results must not be described as complete
+EU-27 coverage unless all 27 member states are represented.
+
+Any cross-country or aggregated EU analysis must disclose the
+countries included.
