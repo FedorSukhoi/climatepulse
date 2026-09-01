@@ -1,0 +1,9 @@
+climatepulse:
+  target: dev
+
+  outputs:
+    dev:
+      type: duckdb
+      path: data/climatepulse.duckdb
+      schema: main
+      threads: 4

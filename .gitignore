@@ -17,3 +17,8 @@ node_modules/
 data/raw/ghcn_daily/
 data/raw/metadata/
 data/processed/
+
+grep -qxF '.user.yml' .gitignore || printf '%s\n' '.user.yml' >> .gitignore
+
+git check-ignore -v .user.yml
+.user.yml

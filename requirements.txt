@@ -1,0 +1,4 @@
+cd /Users/mac/Projects/climatepulse
+source .venv/bin/activate
+
+test -e requirements.txt && echo "requirements.txt already exists" || echo "requirements.txt does not exist"
