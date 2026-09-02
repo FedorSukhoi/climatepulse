@@ -1,0 +1,122 @@
+version: 2
+
+sources:
+  - name: noaa
+    description: >
+      Materialized NOAA GHCN-Daily temperature data for the 971
+      metadata-qualified EU candidate stations. Raw records retain NOAA
+      quality flags and are not restricted to the final analytical station
+      universe or analysis periods.
+    schema: raw
+
+    tables:
+      - name: daily_observations
+        identifier: noaa_daily_observations
+        description: >
+          Raw TMAX and TMIN element-day records. Grain is one station,
+          observation date, and element.
+        columns:
+          - name: station_id
+            description: NOAA GHCN-Daily 11-character station identifier.
+            data_tests:
+              - not_null
+
+          - name: observation_date
+            description: Calendar date represented by the NOAA record.
+            data_tests:
+              - not_null
+
+          - name: element
+            description: NOAA temperature element, either TMAX or TMIN.
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values:
+                      - TMAX
+                      - TMIN
+
+          - name: data_value
+            description: >
+              Raw NOAA temperature value in tenths of a degree Celsius.
+              No quality filtering or unit conversion has been applied.
+            data_tests:
+              - not_null
+
+          - name: measurement_flag
+            description: Nullable NOAA measurement flag.
+
+          - name: quality_flag
+            description: >
+              Nullable NOAA quality flag. Nonblank values must be rejected
+              in the staging layer, not during raw ingestion.
+
+          - name: source_flag
+            description: Nullable NOAA source flag.
+
+          - name: observation_time
+            description: >
+              Nullable observation time retained as text to preserve
+              leading zeroes.
+
+          - name: source_file
+            description: Compressed NOAA station filename that supplied the row.
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('noaa', 'file_manifest')
+                    field: source_file
+
+          - name: ingested_at_utc
+            description: UTC timestamp of the transactional ingestion run.
+            data_tests:
+              - not_null
+
+      - name: file_manifest
+        identifier: noaa_file_manifest
+        description: >
+          One provenance record per compressed NOAA station file included
+          in the ingestion snapshot.
+        columns:
+          - name: station_id
+            description: Station identifier derived from the source filename.
+            data_tests:
+              - not_null
+              - unique
+
+          - name: source_file
+            description: Compressed source filename.
+            data_tests:
+              - not_null
+              - unique
+
+          - name: compressed_bytes
+            description: Source file size in compressed bytes.
+            data_tests:
+              - not_null
+
+          - name: sha256
+            description: SHA-256 digest of the exact compressed source file.
+            data_tests:
+              - not_null
+
+          - name: ingested_at_utc
+            description: UTC timestamp of the transactional ingestion run.
+            data_tests:
+              - not_null
+
+          - name: temperature_row_count
+            description: Number of materialized TMAX and TMIN rows from the file.
+            data_tests:
+              - not_null
+
+          - name: min_observation_date
+            description: Earliest materialized temperature date in the file.
+            data_tests:
+              - not_null
+
+          - name: max_observation_date
+            description: Latest materialized temperature date in the file.
+            data_tests:
+              - not_null

@@ -7,3 +7,5 @@ climatepulse:
       path: data/climatepulse.duckdb
       schema: main
       threads: 4
+      settings:
+        TimeZone: UTC

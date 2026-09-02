@@ -7,6 +7,9 @@ profile: climatepulse
 model-paths:
   - models
 
+test-paths:
+  - tests
+
 target-path: target
 clean-targets:
   - target
