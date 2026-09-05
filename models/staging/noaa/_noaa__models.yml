@@ -1,0 +1,122 @@
+version: 2
+
+models:
+  - name: stg_noaa__observations
+    description: >
+      Quality-approved NOAA TMAX and TMIN observations for all 971
+      candidate stations. Grain is one station, date, and temperature
+      element. Values are converted from tenths of degrees to Celsius.
+    columns:
+      - name: station_id
+        description: NOAA GHCN-Daily station identifier.
+        data_tests:
+          - not_null
+
+      - name: observation_date
+        description: Observation calendar date.
+        data_tests:
+          - not_null
+
+      - name: temperature_element
+        description: NOAA temperature element.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - TMAX
+                  - TMIN
+
+      - name: temperature_c
+        description: Quality-approved temperature in degrees Celsius.
+        data_tests:
+          - not_null
+
+      - name: measurement_flag
+        description: Nullable NOAA measurement flag.
+
+      - name: source_flag
+        description: Nullable NOAA source flag.
+
+      - name: observation_time
+        description: Nullable NOAA observation time retained as text.
+
+      - name: source_file
+        description: NOAA compressed station file that supplied the row.
+        data_tests:
+          - not_null
+
+      - name: ingested_at_utc
+        description: UTC timestamp of the raw ingestion run.
+        data_tests:
+          - not_null
+
+  - name: stg_noaa__stations
+    description: >
+      Frozen analytical universe of 640 qualifying stations across
+      15 EU countries.
+    columns:
+      - name: station_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: noaa_country_code
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__countries')
+                field: noaa_country_code
+
+      - name: iso_alpha2
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__countries')
+                field: iso_alpha2
+
+      - name: country_name
+        data_tests:
+          - not_null
+
+      - name: station_name
+        data_tests:
+          - not_null
+
+      - name: latitude
+        data_tests:
+          - not_null
+
+      - name: longitude
+        data_tests:
+          - not_null
+
+      - name: elevation_m
+        data_tests:
+          - not_null
+
+      - name: baseline_completeness
+        data_tests:
+          - not_null
+
+      - name: recent_completeness
+        data_tests:
+          - not_null
+
+      - name: baseline_min_monthly_completeness
+        data_tests:
+          - not_null
+
+      - name: recent_min_monthly_completeness
+        data_tests:
+          - not_null
+
+      - name: source_file
+        data_tests:
+          - not_null
+
+      - name: ingested_at_utc
+        data_tests:
+          - not_null

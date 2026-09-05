@@ -1,0 +1,140 @@
+version: 2
+
+sources:
+  - name: climatepulse_inputs
+    description: >
+      Project-controlled station eligibility, EU-27 mapping, and frozen
+      methodology inputs loaded into DuckDB outside dbt.
+    schema: raw
+
+    tables:
+      - name: final_stations
+        identifier: final_stations
+        description: >
+          Frozen analytical universe of 640 eligible NOAA stations across
+          15 EU countries.
+        columns:
+          - name: station_id
+            data_tests:
+              - not_null
+              - unique
+
+          - name: noaa_country_code
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('climatepulse_inputs', 'countries')
+                    field: noaa_country_code
+
+          - name: iso_alpha2
+            data_tests:
+              - not_null
+
+          - name: country_name
+            data_tests:
+              - not_null
+
+          - name: station_name
+            data_tests:
+              - not_null
+
+          - name: latitude
+            data_tests:
+              - not_null
+
+          - name: longitude
+            data_tests:
+              - not_null
+
+          - name: elevation_m
+            data_tests:
+              - not_null
+
+          - name: baseline_completeness
+            data_tests:
+              - not_null
+
+          - name: recent_completeness
+            data_tests:
+              - not_null
+
+          - name: baseline_min_monthly_completeness
+            data_tests:
+              - not_null
+
+          - name: recent_min_monthly_completeness
+            data_tests:
+              - not_null
+
+          - name: source_file
+            data_tests:
+              - not_null
+
+          - name: ingested_at_utc
+            data_tests:
+              - not_null
+
+      - name: countries
+        identifier: eu27_countries
+        description: >
+          Complete EU-27 mapping from NOAA country code to ISO alpha-2 code.
+          This is target geography, not actual qualifying-station coverage.
+        columns:
+          - name: noaa_country_code
+            data_tests:
+              - not_null
+              - unique
+
+          - name: country_name
+            data_tests:
+              - not_null
+              - unique
+
+          - name: iso_alpha2
+            data_tests:
+              - not_null
+              - unique
+
+          - name: source_file
+            data_tests:
+              - not_null
+
+          - name: ingested_at_utc
+            data_tests:
+              - not_null
+
+      - name: analysis_parameters
+        identifier: analysis_parameters
+        description: >
+          Frozen baseline, recent-period, and completeness parameters.
+        columns:
+          - name: parameter
+            data_tests:
+              - not_null
+              - unique
+              - accepted_values:
+                  arguments:
+                    values:
+                      - baseline_start_date
+                      - baseline_end_date
+                      - recent_start_date
+                      - recent_end_date
+                      - overall_completeness_threshold
+                      - monthly_completeness_threshold
+
+          - name: value
+            data_tests:
+              - not_null
+
+          - name: description
+            data_tests:
+              - not_null
+
+          - name: source_file
+            data_tests:
+              - not_null
+
+          - name: ingested_at_utc
+            data_tests:
+              - not_null

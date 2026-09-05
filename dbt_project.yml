@@ -14,3 +14,9 @@ target-path: target
 clean-targets:
   - target
   - dbt_packages
+
+models:
+  climatepulse:
+    staging:
+      +materialized: view
+      +schema: staging
