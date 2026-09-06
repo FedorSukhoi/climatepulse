@@ -1,0 +1,157 @@
+version: 2
+
+models:
+  - name: int_analysis_parameters
+    description: One typed row containing the frozen analysis parameters.
+    columns:
+      - name: baseline_start_date
+        data_tests: [not_null]
+      - name: baseline_end_date
+        data_tests: [not_null]
+      - name: recent_start_date
+        data_tests: [not_null]
+      - name: recent_end_date
+        data_tests: [not_null]
+      - name: overall_completeness_threshold
+        data_tests: [not_null]
+      - name: monthly_completeness_threshold
+        data_tests: [not_null]
+
+  - name: int_station_daily_temperatures
+    description: >
+      Valid paired TMAX and TMIN observations for the final 640 stations
+      from 1991 through 2025. Grain is one station and calendar day.
+    columns:
+      - name: station_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_noaa__stations')
+                field: station_id
+      - name: observation_date
+        data_tests: [not_null]
+      - name: calendar_year
+        data_tests: [not_null]
+      - name: calendar_month
+        data_tests: [not_null]
+      - name: maximum_temperature_c
+        data_tests: [not_null]
+      - name: minimum_temperature_c
+        data_tests: [not_null]
+      - name: daily_mean_temperature_c
+        data_tests: [not_null]
+      - name: analysis_period
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [baseline, recent]
+
+  - name: int_station_monthly_temperatures
+    description: >
+      Complete station-month grid from January 1991 through December
+      2025. Missing months remain present with zero paired days and a
+      null monthly temperature.
+    columns:
+      - name: station_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_noaa__stations')
+                field: station_id
+      - name: month_start
+        data_tests: [not_null]
+      - name: calendar_year
+        data_tests: [not_null]
+      - name: calendar_month
+        data_tests: [not_null]
+      - name: analysis_period
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [baseline, recent]
+      - name: expected_day_count
+        data_tests: [not_null]
+      - name: paired_day_count
+        data_tests: [not_null]
+      - name: monthly_completeness
+        data_tests: [not_null]
+      - name: monthly_mean_temperature_c
+        description: Null only when the station-month has no paired days.
+      - name: meets_monthly_completeness_threshold
+        data_tests: [not_null]
+
+  - name: int_station_monthly_baselines
+    description: >
+      Equal-year-weighted 1991–2020 monthly climatology by station and
+      calendar month. At least 21 individually eligible years are
+      required for anomaly use.
+    columns:
+      - name: station_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_noaa__stations')
+                field: station_id
+      - name: calendar_month
+        data_tests: [not_null]
+      - name: baseline_mean_temperature_c
+        data_tests: [not_null]
+      - name: eligible_baseline_years
+        data_tests: [not_null]
+      - name: expected_baseline_years
+        data_tests: [not_null]
+      - name: baseline_year_coverage
+        data_tests: [not_null]
+      - name: minimum_required_baseline_years
+        data_tests: [not_null]
+      - name: meets_baseline_coverage_threshold
+        data_tests: [not_null]
+
+  - name: int_station_monthly_anomalies
+    description: >
+      Complete 2021–2025 station-month grid with anomaly eligibility and
+      temperature anomaly relative to the station/calendar-month
+      baseline.
+    columns:
+      - name: station_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_noaa__stations')
+                field: station_id
+      - name: month_start
+        data_tests: [not_null]
+      - name: calendar_year
+        data_tests: [not_null]
+      - name: calendar_month
+        data_tests: [not_null]
+      - name: expected_day_count
+        data_tests: [not_null]
+      - name: paired_day_count
+        data_tests: [not_null]
+      - name: monthly_completeness
+        data_tests: [not_null]
+      - name: monthly_mean_temperature_c
+      - name: baseline_mean_temperature_c
+        data_tests: [not_null]
+      - name: eligible_baseline_years
+        data_tests: [not_null]
+      - name: expected_baseline_years
+        data_tests: [not_null]
+      - name: baseline_year_coverage
+        data_tests: [not_null]
+      - name: meets_recent_month_completeness_threshold
+        data_tests: [not_null]
+      - name: meets_baseline_coverage_threshold
+        data_tests: [not_null]
+      - name: is_anomaly_eligible
+        data_tests: [not_null]
+      - name: temperature_anomaly_c
+        description: >
+          Null unless both recent-month and baseline coverage rules pass.
