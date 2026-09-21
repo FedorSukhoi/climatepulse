@@ -1,0 +1,205 @@
+version: 2
+
+models:
+  - name: dim_locations
+    description: >
+      Final analytical station dimension containing the frozen 640-station
+      universe across 15 represented EU countries. Grain is one row per
+      station.
+    columns:
+      - name: station_id
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_noaa__stations')
+                field: station_id
+
+      - name: noaa_country_code
+        data_tests: [not_null]
+
+      - name: iso_alpha2
+        data_tests: [not_null]
+
+      - name: country_name
+        data_tests: [not_null]
+
+      - name: station_name
+        data_tests: [not_null]
+
+      - name: latitude
+        data_tests: [not_null]
+
+      - name: longitude
+        data_tests: [not_null]
+
+      - name: elevation_m
+        data_tests: [not_null]
+
+      - name: baseline_completeness
+        data_tests: [not_null]
+
+      - name: recent_completeness
+        data_tests: [not_null]
+
+      - name: baseline_min_monthly_completeness
+        data_tests: [not_null]
+
+      - name: recent_min_monthly_completeness
+        data_tests: [not_null]
+  - name: fct_anomalies
+    description: >
+      Complete station-month anomaly fact for January 2021 through
+      December 2025. Grain is one final station and recent-period month.
+      Ineligible station-months remain present with a null anomaly.
+    columns:
+      - name: station_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_locations')
+                field: station_id
+
+      - name: month_start
+        data_tests: [not_null]
+
+      - name: calendar_year
+        data_tests: [not_null]
+
+      - name: calendar_month
+        data_tests: [not_null]
+
+      - name: expected_day_count
+        data_tests: [not_null]
+
+      - name: paired_day_count
+        data_tests: [not_null]
+
+      - name: monthly_completeness
+        data_tests: [not_null]
+
+      - name: monthly_mean_temperature_c
+        description: >
+          Mean of valid paired daily TMAX and TMIN values. Null only
+          when the station-month contains no paired days.
+
+      - name: baseline_mean_temperature_c
+        data_tests: [not_null]
+
+      - name: eligible_baseline_years
+        data_tests: [not_null]
+
+      - name: expected_baseline_years
+        data_tests: [not_null]
+
+      - name: baseline_year_coverage
+        data_tests: [not_null]
+
+      - name: meets_recent_month_completeness_threshold
+        data_tests: [not_null]
+
+      - name: meets_baseline_coverage_threshold
+        data_tests: [not_null]
+
+      - name: is_anomaly_eligible
+        data_tests: [not_null]
+
+      - name: temperature_anomaly_c
+        description: >
+          Monthly temperature anomaly in degrees Celsius. Null unless
+          both recent-month completeness and baseline coverage pass.
+  - name: agg_country_monthly_anomalies
+    description: >
+      Monthly anomaly aggregate for each of the 15 represented countries.
+      Grain is one represented country and recent-period month. Country
+      means use only eligible station anomalies. Country-months without an
+      eligible station remain present with a null mean.
+    columns:
+      - name: month_start
+        data_tests: [not_null]
+
+      - name: calendar_year
+        data_tests: [not_null]
+
+      - name: calendar_month
+        data_tests: [not_null]
+
+      - name: noaa_country_code
+        data_tests: [not_null]
+
+      - name: iso_alpha2
+        data_tests: [not_null]
+
+      - name: country_name
+        data_tests: [not_null]
+
+      - name: total_final_stations
+        data_tests: [not_null]
+
+      - name: eligible_contributing_stations
+        data_tests: [not_null]
+
+      - name: station_contribution_ratio
+        data_tests: [not_null]
+
+      - name: has_eligible_station_contribution
+        data_tests: [not_null]
+
+      - name: country_mean_temperature_anomaly_c
+        description: >
+          Mean of eligible station anomalies within the country-month.
+          Null when no station has an eligible anomaly.
+  - name: agg_included_countries_monthly_anomalies
+    description: >
+      Equal-weight monthly mean of available country-level anomalies.
+      Grain is one recent-period month. Each included country receives
+      equal weight regardless of its number of stations. This is an
+      included-country aggregate and must not be described as an EU-27
+      anomaly.
+    columns:
+      - name: month_start
+        data_tests:
+          - not_null
+          - unique
+
+      - name: calendar_year
+        data_tests: [not_null]
+
+      - name: calendar_month
+        data_tests: [not_null]
+
+      - name: eligible_contributing_station_count
+        data_tests: [not_null]
+
+      - name: represented_station_universe_count
+        data_tests: [not_null]
+
+      - name: station_contribution_ratio
+        description: >
+          Share of the 640 final stations contributing eligible anomalies.
+          This is a diagnostic measure and is not used as an aggregation
+          weight.
+        data_tests: [not_null]
+
+      - name: included_country_count
+        data_tests: [not_null]
+
+      - name: represented_country_universe_count
+        data_tests: [not_null]
+
+      - name: eu27_target_country_count
+        data_tests: [not_null]
+
+      - name: represented_country_coverage_ratio
+        data_tests: [not_null]
+
+      - name: eu27_target_country_coverage_ratio
+        data_tests: [not_null]
+
+      - name: equal_weight_included_country_mean_anomaly_c
+        description: >
+          Equal-weight mean of available country-level anomaly values.
+          Countries without an eligible station contribution are excluded
+          from the monthly denominator.
