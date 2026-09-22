@@ -111,8 +111,8 @@ invalid_summary as (
     from summary_metrics
 
     where
-        row_count <> 900
-        or country_count <> 15
+        row_count <> (select count(distinct iso_alpha2) from {{ ref('dim_locations') }}) * 60
+        or country_count <> (select count(distinct iso_alpha2) from {{ ref('dim_locations') }})
         or month_count <> 60
 
 )

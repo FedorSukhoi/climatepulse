@@ -1,3 +1,5 @@
+{{ config(tags=['production_snapshot']) }}
+
 with anomaly_summary as (
 
     select

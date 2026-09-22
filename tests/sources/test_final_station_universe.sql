@@ -1,3 +1,5 @@
+{{ config(tags=['production_snapshot']) }}
+
 -- Verifies that the frozen universe contains exactly 640 stations across 15 countries.
 
 with station_summary as (

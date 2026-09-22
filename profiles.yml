@@ -9,3 +9,10 @@ climatepulse:
       threads: 4
       settings:
         TimeZone: UTC
+    ci:
+      type: duckdb
+      path: data/climatepulse_ci.duckdb
+      schema: main
+      threads: 4
+      settings:
+        TimeZone: UTC

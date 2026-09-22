@@ -1,3 +1,5 @@
+{{ config(tags=['production_snapshot']) }}
+
 -- Verifies that the staged universe is exactly 640 stations and 15 countries.
 
 with station_summary as (

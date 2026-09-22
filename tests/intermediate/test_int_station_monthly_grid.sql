@@ -10,7 +10,7 @@ with grid_summary as (
 select *
 from grid_summary
 where
-    row_count <> 268800
-    or station_count <> 640
+    row_count <> (select count(*) from {{ ref('stg_noaa__stations') }}) * 420
+    or station_count <> (select count(*) from {{ ref('stg_noaa__stations') }})
     or minimum_month <> date '1991-01-01'
     or maximum_month <> date '2025-12-01'

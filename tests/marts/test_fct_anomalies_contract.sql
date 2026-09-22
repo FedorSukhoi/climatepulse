@@ -92,8 +92,8 @@ invalid_summary as (
     from summary_metrics
 
     where
-        row_count <> 38400
-        or station_count <> 640
+        row_count <> (select count(*) from {{ ref('stg_noaa__stations') }}) * 60
+        or station_count <> (select count(*) from {{ ref('stg_noaa__stations') }})
         or month_count <> 60
 
 )

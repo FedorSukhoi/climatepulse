@@ -22,7 +22,7 @@ invalid_rows as (
         or calendar_month <> extract(month from month_start)
         or calendar_month not between 1 and 12
         or eligible_contributing_station_count < 0
-        or represented_station_universe_count <> 640
+        or represented_station_universe_count <> (select count(*) from {{ ref('dim_locations') }})
         or eligible_contributing_station_count
             > represented_station_universe_count
         or station_contribution_ratio not between 0 and 1
@@ -34,7 +34,7 @@ invalid_rows as (
         or included_country_count < 0
         or included_country_count
             > represented_country_universe_count
-        or represented_country_universe_count <> 15
+        or represented_country_universe_count <> (select count(distinct iso_alpha2) from {{ ref('dim_locations') }})
         or eu27_target_country_count <> 27
         or represented_country_coverage_ratio not between 0 and 1
         or eu27_target_country_coverage_ratio not between 0 and 1

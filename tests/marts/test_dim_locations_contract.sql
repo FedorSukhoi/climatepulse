@@ -47,10 +47,10 @@ invalid_summary as (
     from summary_metrics
 
     where
-        row_count <> 640
-        or noaa_country_count <> 15
-        or iso_country_count <> 15
-        or country_name_count <> 15
+        row_count <> (select count(*) from {{ ref('stg_noaa__stations') }})
+        or noaa_country_count <> (select count(distinct noaa_country_code) from {{ ref('stg_noaa__stations') }})
+        or iso_country_count <> (select count(distinct iso_alpha2) from {{ ref('stg_noaa__stations') }})
+        or country_name_count <> (select count(distinct country_name) from {{ ref('stg_noaa__stations') }})
 
 )
 

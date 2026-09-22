@@ -1,3 +1,5 @@
+{{ config(tags=['production_snapshot']) }}
+
 with coverage_summary as (
 
     select
