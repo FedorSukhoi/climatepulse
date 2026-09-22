@@ -34,7 +34,7 @@ from climatepulse.agg_included_countries_monthly_anomalies
 order by month_start
 ```
 
-<LineChart data={trend} x=month_start y=anomaly_c yAxisTitle="Anomaly (°C)" title="Monthly anomaly versus 1991–2020"/>
+<LineChart data={trend} x=month_start y=anomaly_c yAxisTitle="Anomaly (°C)" title="Monthly anomaly versus 1991–2020" echartsOptions={{xAxis: {max: '2025-12-31'}}}/>
 
 The five-year mean of the 60 monthly included-country values is **0.94 °C**. The contributing-country count varies from **13 to 15**; **23 of 60 months** have fewer than all 15 represented countries. Inspect the coverage table below before comparing individual months.
 
@@ -75,13 +75,13 @@ Country bars have unequal evidence behind them. Bulgaria, Croatia, Luxembourg, a
 
 ## Country and station detail
 
+Select two to four countries to compare their monthly series. You can also choose one country or use **Select all** in the menu. The table below each chart shows the number of eligible stations behind every country-month value.
+
 ```sql country_options
 select distinct country_name from climatepulse.dim_locations order by country_name
 ```
 
-<Dropdown data={country_options} name=country value=country_name>
-    <DropdownOption value="%" valueLabel="All covered countries"/>
-</Dropdown>
+<Dropdown data={country_options} name=country value=country_name multiple defaultValue={['France', 'Germany', 'Sweden']} title="Countries to compare"/>
 
 ```sql selected_country
 select
@@ -92,11 +92,11 @@ select
     total_final_stations,
     station_contribution_ratio
 from climatepulse.agg_country_monthly_anomalies
-where country_name like '${inputs.country.value}'
+where country_name in ${inputs.country.value}
 order by month_start, country_name
 ```
 
-<LineChart data={selected_country} x=month_start y=anomaly_c series=country_name yAxisTitle="Anomaly (°C)" title="Country series"/>
+<LineChart data={selected_country} x=month_start y=anomaly_c series=country_name yAxisTitle="Anomaly (°C)" title="Country series" echartsOptions={{xAxis: {max: '2025-12-31'}}}/>
 
 <DataTable data={selected_country} rows=12/>
 
@@ -109,7 +109,7 @@ select
     round(avg(facts.temperature_anomaly_c), 2) as mean_eligible_anomaly_c
 from climatepulse.dim_locations as locations
 join climatepulse.fct_anomalies as facts using (station_id)
-where locations.country_name like '${inputs.country.value}'
+where locations.country_name in ${inputs.country.value}
 group by locations.station_id, locations.station_name, locations.country_name
 order by locations.country_name, locations.station_name
 ```
@@ -131,7 +131,7 @@ from climatepulse.agg_included_countries_monthly_anomalies
 order by month_start
 ```
 
-<LineChart data={coverage} x=month_start y=included_country_count yAxisTitle="Countries" title="Countries included each month"/>
+<LineChart data={coverage} x=month_start y=included_country_count yAxisTitle="Countries" title="Countries included each month" echartsOptions={{xAxis: {max: '2025-12-31'}}}/>
 
 <DataTable data={coverage} rows=12/>
 
