@@ -11,7 +11,7 @@ ClimatePulse measures monthly temperature anomalies for a quality-controlled sam
 - Four countries have only one final station. Germany has 277 and Sweden has 100. The country-first rule prevents those station-rich countries from dominating the headline mean, but does not make one-station countries spatially representative.
 - The country-first and direct station averages differ by over 0.01 °C in 59 of 60 months in this snapshot. See [mart contracts](docs/mart_contracts.md) for reconciliation details.
 
-[Open the dashboard source](dashboard/pages/index.md) · [Data dictionary](docs/data_dictionary.md) · [Methodology](docs/anomaly_methodology.md) · [Architecture review](docs/architecture_review.md)
+[Open the four-step introduction](dashboard/pages/index.md) · [Dashboard source](dashboard/pages/dashboard.md) · [Data dictionary](docs/data_dictionary.md) · [Methodology](docs/anomaly_methodology.md) · [Architecture review](docs/architecture_review.md)
 
 ## Architecture
 
@@ -46,7 +46,7 @@ npm run sources
 npm run build
 ```
 
-The checked-in dashboard CSVs are generated only from the tested production marts. `npm run build` uses those exports; it does not require a raw NOAA download or local production DuckDB database. Run `npm run dev` in `dashboard/` for a local preview. See [dashboard data provenance](docs/dashboard_data.md).
+The checked-in dashboard CSVs are generated only from the tested production marts. `npm run build` uses those exports; it does not require a raw NOAA download or local production DuckDB database. Run `npm run dev` in `dashboard/` for a local preview. The home page introduces the data in four short steps; readers can skip directly to `/dashboard/`. See [dashboard data provenance](docs/dashboard_data.md).
 
 ## Full production reproduction
 
