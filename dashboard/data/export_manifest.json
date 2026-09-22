@@ -1,0 +1,23 @@
+{
+  "source": "ClimatePulse production dbt marts",
+  "baseline": "1991-2020",
+  "recent": "2021-2025",
+  "tables": {
+    "dim_locations": {
+      "rows": 640,
+      "sha256": "d4e6c101bff72a407176cebf0c1bd2fb444833ee97c34b913a9816fb4017d5b0"
+    },
+    "fct_anomalies": {
+      "rows": 38400,
+      "sha256": "f2f0edde44bc55e6f2f3e7907a66d546699e99e08cadb9b8dfec5ffdb01ed28e"
+    },
+    "agg_country_monthly_anomalies": {
+      "rows": 900,
+      "sha256": "086fb022fe3d8ebe9ec109c0163d5313b39a719870d96fc5637f50ed1e574408"
+    },
+    "agg_included_countries_monthly_anomalies": {
+      "rows": 60,
+      "sha256": "cfeee48020b4315d436bc51454d1f848c8fc9979caa9d9fa7fddb95a575aa9c8"
+    }
+  }
+}

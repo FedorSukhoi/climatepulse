@@ -19,3 +19,8 @@ data/raw/metadata/
 data/processed/
 
 .user.yml
+
+dashboard/.evidence/
+dashboard/.svelte-kit/
+dashboard/build/
+dashboard/static/data/
