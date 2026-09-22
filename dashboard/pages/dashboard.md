@@ -1,5 +1,9 @@
 ---
 title: ClimatePulse | Temperature anomalies
+sidebar: never
+hide_header: true
+hide_breadcrumbs: true
+hide_toc: true
 ---
 
 ## Temperature anomalies in the covered EU countries, 2021–2025

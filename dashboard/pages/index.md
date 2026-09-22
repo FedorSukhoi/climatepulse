@@ -1,6 +1,7 @@
 ---
 title: ClimatePulse | Start here
 sidebar: never
+sidebar_link: false
 hide_header: true
 hide_breadcrumbs: true
 hide_toc: true
