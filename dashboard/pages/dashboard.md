@@ -6,7 +6,15 @@ hide_breadcrumbs: true
 hide_toc: true
 ---
 
-## Temperature anomalies in the covered EU countries, 2021–2025
+<link rel="stylesheet" href="/footer.css" />
+<link rel="stylesheet" href="/guide.css" />
+
+<nav class="guide-nav" aria-label="Main navigation">
+  <a href="/">CLIMATEPULSE</a>
+  <div><a href="/dashboard/" aria-current="page">Dashboard</a><a href="/breakdown/">Months explained</a><a href="/faq/">FAQ</a></div>
+</nav>
+
+# Temperature anomalies in the covered EU countries, 2021–2025
 
 > **Coverage boundary:** This analysis covers qualifying stations in **15 of the EU-27 countries**. It is an equal-weight average of the countries with an eligible station in each month. It is not a complete EU-27 temperature measure.
 
@@ -38,7 +46,7 @@ from climatepulse.agg_included_countries_monthly_anomalies
 order by month_start
 ```
 
-<LineChart data={trend} x=month_start y=anomaly_c yAxisTitle="Anomaly (°C)" title="Monthly anomaly versus 1991–2020" echartsOptions={{xAxis: {max: '2025-12-31'}}}/>
+<OutlierLineChart data={trend} title="Monthly anomaly versus 1991–2020"/>
 
 The five-year mean of the 60 monthly included-country values is **0.94 °C**. The contributing-country count varies from **13 to 15**; **23 of 60 months** have fewer than all 15 represented countries. Inspect the coverage table below before comparing individual months.
 
@@ -85,7 +93,7 @@ Select two to four countries to compare their monthly series. You can also choos
 select distinct country_name from climatepulse.dim_locations order by country_name
 ```
 
-<Dropdown data={country_options} name=country value=country_name multiple defaultValue={['France', 'Germany', 'Sweden']} title="Countries to compare"/>
+<Dropdown data={country_options} name=country value=country_name multiple defaultValue={['Germany', 'Romania', 'Finland']} title="Countries to compare"/>
 
 ```sql selected_country
 select
@@ -100,7 +108,7 @@ where country_name in ${inputs.country.value}
 order by month_start, country_name
 ```
 
-<LineChart data={selected_country} x=month_start y=anomaly_c series=country_name yAxisTitle="Anomaly (°C)" title="Country series" echartsOptions={{xAxis: {max: '2025-12-31'}}}/>
+<OutlierLineChart data={selected_country} series="country_name" title="Country series"/>
 
 <DataTable data={selected_country} rows=12/>
 
@@ -150,3 +158,15 @@ The EU-27 participation percentage is the share of target countries with at leas
 5. Average eligible station anomalies within a country, then average available country means equally. Keep missing station and country grid rows for coverage diagnostics.
 
 The frozen 640 stations represent 15 countries. Twelve EU members have no qualifying stations. Stations are unevenly distributed, and the country-first method gives a one-station country the same country weight as a station-rich country when it contributes. The raw NOAA snapshot and its manifest are required to reproduce the complete pipeline; this dashboard instead ships validated mart exports. The full source and model contracts are documented in the repository.
+
+<footer class="site-footer">
+  <span>Made by Fedor Sukhoi</span>
+  <div class="site-footer-links">
+    <a href="https://github.com/FedorSukhoi/climatepulse" target="_blank" rel="noopener noreferrer" aria-label="ClimatePulse repository on GitHub" title="ClimatePulse on GitHub">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.23c-3.2.69-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.47.11-3.06 0 0 .96-.31 3.16 1.18a11 11 0 0 1 5.75 0c2.19-1.49 3.15-1.18 3.15-1.18.63 1.59.23 2.77.12 3.06.73.81 1.18 1.84 1.18 3.1 0 4.41-2.69 5.38-5.26 5.67.42.36.78 1.05.78 2.13v3.25c0 .31.21.68.79.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/sukhoi-fedor/" target="_blank" rel="noopener noreferrer" aria-label="Fedor Sukhoi on LinkedIn" title="Fedor Sukhoi on LinkedIn">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52c0-.84-.69-1.52-1.55-1.52ZM7.93 18.75H4.98V9.2h2.95v9.55ZM6.45 7.9a1.71 1.71 0 1 1 0-3.42 1.71 1.71 0 0 1 0 3.42Zm12.3 10.85H15.8V14.1c0-1.11-.02-2.53-1.54-2.53-1.54 0-1.78 1.2-1.78 2.45v4.73H9.53V9.2h2.83v1.31h.04c.39-.74 1.36-1.53 2.79-1.53 2.99 0 3.56 1.97 3.56 4.53v5.24Z"/></svg>
+    </a>
+  </div>
+</footer>

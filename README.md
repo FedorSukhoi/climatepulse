@@ -46,7 +46,7 @@ npm run sources
 npm run build
 ```
 
-The checked-in dashboard CSVs are generated only from the tested production marts. `npm run build` uses those exports; it does not require a raw NOAA download or local production DuckDB database. Run `npm run dev` in `dashboard/` for a local preview. The home page introduces the data in four short steps; readers can skip directly to `/dashboard/`. See [dashboard data provenance](docs/dashboard_data.md).
+The checked-in dashboard CSVs are generated only from the tested production marts. `npm run build` uses those exports; it does not require a raw NOAA download or local production DuckDB database. Run `npm run dev` in `dashboard/` for a local preview. The home page introduces the data in four short steps; readers can skip directly to `/dashboard/`. See [dashboard data provenance](docs/dashboard_data.md). The `/faq/` page explains the data by topic in plain language. `/breakdown/` explores four selected anomaly months with coverage, country or station detail, and external reports. Intro typography uses locally hosted Jeju Hallasan and Julius Sans One; dashboard typography remains unchanged.
 
 ## Full production reproduction
 

@@ -1,0 +1,7 @@
+#evidence-main-article .site-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 40px; padding: 20px 0; border-top: 1px solid #e1e5e8; color: #626970; font-size: 12px; }
+#evidence-main-article .site-footer-links { display: flex; align-items: center; gap: 8px; }
+#evidence-main-article .site-footer-links a { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; color: inherit; border-radius: 4px; text-decoration: none; }
+#evidence-main-article .site-footer-links a:hover { color: #226aa3; background: #f3f6f8; }
+#evidence-main-article .site-footer-links a:focus-visible { outline: 2px solid #226aa3; outline-offset: 3px; }
+#evidence-main-article .site-footer svg { display: block; flex-shrink: 0; }
+#evidence-main-article:has(.intro) .site-footer { margin-top: 0; border-top: 0; }
