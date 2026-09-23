@@ -1,3 +1,5 @@
+[Open ClimatePulse](https://climatepulse.lilac-emu-7363.chatgpt.site)
+
 # ClimatePulse
 
 ClimatePulse measures monthly temperature anomalies for a quality-controlled sample of European weather stations. It pairs NOAA GHCN-Daily `TMAX` and `TMIN` readings, compares 2021–2025 months with a fixed 1991–2020 baseline, and publishes tested station, country, and included-country marts through dbt and an Evidence dashboard.
