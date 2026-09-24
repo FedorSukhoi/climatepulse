@@ -1,4 +1,4 @@
-[Open ClimatePulse](https://climatepulse.lilac-emu-7363.chatgpt.site)
+[Open ClimatePulse](https://climatepulse.suhojfedor.chatgpt.site)
 
 # ClimatePulse
 
