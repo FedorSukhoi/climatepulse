@@ -50,6 +50,12 @@ npm run build
 
 The checked-in dashboard CSVs are generated only from the tested production marts. `npm run build` uses those exports; it does not require a raw NOAA download or local production DuckDB database. Run `npm run dev` in `dashboard/` for a local preview. The home page introduces the data in four short steps; readers can skip directly to `/dashboard/`. See [dashboard data provenance](docs/dashboard_data.md). The `/faq/` page explains the data by topic in plain language. `/breakdown/` explores four selected anomaly months with coverage, country or station detail, and external reports. Intro typography uses locally hosted Jeju Hallasan and Julius Sans One; dashboard typography remains unchanged.
 
+## Hosting
+
+The public site uses Sites hosting. After building the dashboard, run `node scripts/prepare_site.mjs` from the repository root to prepare `dist/`. The deployment package loads the exact installed DuckDB WebAssembly engine version from jsDelivr to respect the host's 25 MiB per-file limit; query workers and dashboard data remain hosted with the site. This requires visitors to be able to reach jsDelivr.
+
+The dashboard is a frozen data snapshot, not a live NOAA feed. Changes to GitHub do not automatically publish: rebuild, package, and publish a new Sites version to update the public site.
+
 ## Full production reproduction
 
 The original raw station files are intentionally excluded from Git. Download the source metadata and candidate station files from NOAA, then regenerate the frozen universe and marts. This creates a **new live NOAA snapshot**, so compare its manifest and mart counts with the tracked frozen snapshot before treating the dashboard exports as equivalent. NOAA can revise historical files. The tracked manifest detects drift but does not recover old source bytes.
